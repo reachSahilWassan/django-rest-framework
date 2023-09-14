@@ -14,14 +14,22 @@ logging.basicConfig(level=logging.INFO)
 # Create your views here.
 
 
-@api_view(["GET", "POST"])
+@api_view(["POST"])
 def api_home(request, *args, **kwargs) -> dict:
     """DRF API View"""
 
-    product_data = Products.objects.all().order_by("?").first()
+    serializer = ProductSerializer(data=request.data)
+    # product_data = Products.objects.all().order_by("?").first()
     data = {}
+    if serializer.is_valid(raise_exception=True):
+        # instance = serializer.save()
+        data = serializer.data
+        return Response(data)
+    
 
-    if product_data:
-        # data = model_to_dict(product_data)
-        data = ProductSerializer(product_data).data
-    return Response(data)
+
+    # if product_data:
+    #     # data = model_to_dict(product_data)
+    #     data = ProductSerializer(product_data).data
+    # return Response(data)
+    # return JsonResponse(data)
