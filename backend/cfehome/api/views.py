@@ -3,6 +3,8 @@ from django.http import JsonResponse
 import json
 import logging
 from pdb import set_trace
+from products.models import Products
+from django.forms.models import model_to_dict
 
 
 logging.basicConfig(level=logging.INFO)
@@ -11,11 +13,11 @@ logging.basicConfig(level=logging.INFO)
 
 
 def api_home(request, *args, **kwargs) -> dict:
-    body = request.body
+    product_data = Products.objects.all().order_by("?").first()
     data = {}
     try:
-        data = json.loads(body)
-        print(data)
+        if product_data:
+            data = model_to_dict(product_data)
     except:
         logging.exception("ERROR")
     # data["headers"] = request.headers
