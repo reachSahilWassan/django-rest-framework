@@ -20,3 +20,15 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     lookup_field = "pk"
 
 
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Products.objects.all()
+    serializer_class = ProductSerializer
+
+
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Products.objects.all()
+    serializer_class = ProductSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
